@@ -11,8 +11,10 @@
 ## Installing
 
 In order to use CsoundUnity you will need to install the packages available from the following links:
-<br>[CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
-<be>[CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
+
+- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
+
+- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
 
 The package comes with a simple scene that demonstrates how it can be used. If you installed CsoundUnity from the Assets Store, you will need to also install Csound. Information on this is given below in the [troubleshooting](#troubleshooting) section.
 
@@ -65,8 +67,10 @@ When a Csound file which contains a valid <CsoundUnity> section is dragged to a 
 ## Troubleshooting
 
 If you installed CsoundUnity from the Assets Store and don't already have Csound, you should simply install one of the following packages instead:
-<br>[CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
-<be>[CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
+
+- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
+
+- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
 On Windows, the csound64.dll must reside in the SmtreaingAssets folder. If it is not there, CsoundUnity will display an error. One OSX, the CsoundLib64.framework must reside in the StreamingAssets folder. If it is not, CsoundUnity will display an error. 
 
 If you have Csound installed you can simple place it to the correct location, although it is far easier to use the package provided. They will not have any effect on any existing Csound installation. If you are having any issues with CsoundUnity, please use the github [Issue Tracker](https://github.com/rorywalsh/CsoundUnity/issues) to file an issue. 
