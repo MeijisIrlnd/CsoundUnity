@@ -44,17 +44,17 @@
 
 <p>CsoundUnity is a simple component that can be added to any GameObject in a scene. To do so simple hit <strong>AddComponent</strong> in the inspector, then click <strong>Audio</strong> and add <strong>CsoundUnity</strong>.</p>
 
-<p><img src="/images/addCsoundUnityComponent.gif" alt="Add CsoundUnity"/></p>
+<p><img src="images/addCsoundUnityComponent.gif" alt="Add CsoundUnity"/></p>
 
 <p>CsoundUnity requires the presence of an AudioSource. If the GameObject you are trying to attach a CsoundUnity component to does not already have an AudioSource attached, one will be added automatically. </p>
 
 <p>Once a CsoundUnity component has been added to a GameObject, you will need to attach a Csound file to it. Csound files <em>MUST</em> be placed somewhere in the Assets/Scripts folder. In the sample CsoundUnity package they are kept in a sub-folder within Assets/Scripts called CsoundFiles. This is not required, but may help to better organise your assets. To attach a Csound file to a CsoundUnity component, simply drag it from the Assets folder to the 'Drag and Drop Csound file here' field in the CsoundUnity component inspector.</p>
 
-<p><img src="/images/addCsoundFile.gif" alt="Add Csound file"/></p>
+<p><img src="images/addCsoundFile.gif" alt="Add Csound file"/></p>
 
 <p>Your Csound files should always include the <strong>-n -d</strong> flags in the CsOptions section. </p>
 
-<p><img src="/images/CsOptions.png" alt="CsOptions"/></p>
+<p><img src="images/CsOptions.png" alt="CsOptions"/></p>
 
 <p>This ensures Csound does not try to open an audio devices. This is left to Unity. If you fails to disable writing of audio from Csound to realtime audio output, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package.</p>
 
@@ -62,11 +62,11 @@
 
 <p>Once you have attached a Csound file to a CsoundUnity componet, you may wish to control aspects of that instrument in realtime. To do this, you can use Csound's channel system. Csound allows external data to be sent and received over its channel system. To access data in Csound, one must use the <strong>chnget</strong> opcode. In the following code example, we access data being sent from Unity to Csoud on a channel named <em>speed</em>. The variable kSpeed will constantly update according to the value stored on the channel named <em>speed</em>. </p>
 
-<p><img src="/images/chnget.png" alt="chnget"/></p>
+<p><img src="images/chnget.png" alt="chnget"/></p>
 
 <p>In order to send data from Unity to Csound we must use the <strong>CsoundUnity::setChannel(string channel, double value)</strong> method. Before calling any CsoundUnity methods, one must first access the component using the <strong>GetComponent()</strong> method. This can be seen the simple script that follows. One usually calls GetComponent() in your script's <strong>Awake()</strong> method. Once the CsoundUnity componet has been accessed, any of its member method can be called. In the <strong>update()</strong> method of the script below,     </p>
 
-<p><img src="/images/setChannel.png" alt="setChannel"/></p>
+<p><img src="images/setChannel.png" alt="setChannel"/></p>
 
 
         
