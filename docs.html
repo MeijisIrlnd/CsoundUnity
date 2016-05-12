@@ -22,6 +22,8 @@
 
     <section class="main-content">
       <p>
+
+
 <h3>Documentation</h3>
 
 <ul>
@@ -35,8 +37,8 @@
 <h2>Installing <a name="installing"></a></h2>
 
 <p>In order to use CsoundUnity you will need to install the packages available from the following links:
-<a href="https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage">CsoundUnity for Windows</a> 
-<a href="https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage">CsoundUnity for OSX</a></p>
+-   <a href="https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage">CsoundUnity for Windows</a> 
+-   <a href="https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage">CsoundUnity for OSX</a></p>
 
 <p>The package comes with a simple scene that demonstrates how it can be used. If you installed CsoundUnity from the Assets Store, you will need to also install Csound. Information on this is given below in the <a href="#troubleshooting">troubleshooting</a> section.</p>
 
@@ -58,7 +60,7 @@
 
 <p>This ensures Csound does not try to open an audio devices. This is left to Unity. If you fails to disable writing of audio from Csound to realtime audio output, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package.</p>
 
-<h2>Controlling Csound from Unity <a name=controlling_csound_from_unity></h2>
+<h2>Controlling Csound from Unity <a name=controlling_csound_from_unity></a></h2>
 
 <p>Once you have attached a Csound file to a CsoundUnity componet, you may wish to control aspects of that instrument in realtime. To do this, you can use Csound's channel system. Csound allows external data to be sent and received over its channel system. To access data in Csound, one must use the <strong>chnget</strong> opcode. In the following code example, we access data being sent from Unity to Csoud on a channel named <em>speed</em>. The variable kSpeed will constantly update according to the value stored on the channel named <em>speed</em>. </p>
 
@@ -67,6 +69,7 @@
 <p>In order to send data from Unity to Csound we must use the <strong>CsoundUnity::setChannel(string channel, double value)</strong> method. Before calling any CsoundUnity methods, one must first access the component using the <strong>GetComponent()</strong> method. This can be seen the simple script that follows. One usually calls GetComponent() in your script's <strong>Awake()</strong> method. Once the CsoundUnity componet has been accessed, any of its member method can be called. In the <strong>update()</strong> method of the script below,     </p>
 
 <p><img src="http://rorywalsh.github.io/CsoundUnity/images/setChannel.png" alt="setChannel"/></p>
+
 
 
         
