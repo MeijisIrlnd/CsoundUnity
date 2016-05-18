@@ -27,7 +27,7 @@ CsoundUnity is a simple component that can be added to any GameObject in a scene
 
 CsoundUnity requires the presence of an AudioSource. If the GameObject you are trying to attach a CsoundUnity component to does not already have an AudioSource attached, one will be added automatically. 
 
-Once a CsoundUnity component has been added to a GameObject, you will need to attach a Csound file to it. Csound files *MUST* be placed somewhere in the Assets/Scripts folder. In the sample CsoundUnity package they are kept in a sub-folder within Assets/Scripts called CsoundFiles. This is not required, but may help to better organise your assets. To attach a Csound file to a CsoundUnity component, simply drag it from the Assets folder to the 'Drag and Drop Csound file here' field in the CsoundUnity component inspector. When your game starts, Csound will feed audio from its output buffer into the AudioSource. Any audio produced by Csound can be accessed through the AudioSource component. This is currently restricted to stereo files, but will wor for any amount of channels. See [CsoundUnity::processBlock()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L130-L161) 
+Once a CsoundUnity component has been added to a GameObject, you will need to attach a Csound file to it. Csound files *MUST* be placed somewhere in the Assets/Scripts folder. In the sample CsoundUnity package they are kept in a sub-folder within Assets/Scripts called CsoundFiles. This is not required, but may help to better organise your assets. To attach a Csound file to a CsoundUnity component, simply drag it from the Assets folder to the 'Drag and Drop Csound file here' field in the CsoundUnity component inspector. When your game starts, Csound will feed audio from its output buffer into the AudioSource. Any audio produced by Csound can be accessed through the AudioSource component. This is currently restricted to stereo files, but will work for any amount of channels. See [**CsoundUnity::processBlock()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L130-L161) 
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/addCsoundFile.gif" alt="Add Csound file"/>
 
@@ -35,7 +35,7 @@ Your Csound files should always include the **-n -d** flags in the CsOptions sec
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/CsOptions.png" alt="CsOptions"/>
 
-This ensures Csound does not try to open any audio devices. This is left to entirely up to Unity. If you fail to disable writing of audio from Csound to a realtime audio output device, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package. You can also start an instrument to play at any time using the [CsoundUnity::sendScoreEvent()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L252-L256) method. 
+This ensures Csound does not try to open any audio devices. This is left to entirely up to Unity. If you fail to disable writing of audio from Csound to a realtime audio output device, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package. You can also start an instrument to play at any time using the [**CsoundUnity::sendScoreEvent()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L252-L256) method. 
 
 <a name=controlling_csound_from_unity></a>
 ## Controlling Csound from Unity 
@@ -84,50 +84,50 @@ If your game crashes at any point, the best place to look for answers will be in
 
 Below is a list of all the methods currently available in CsoundUnity. 
 
-```public void setChannel(string channel, float val)```
+[**public void setChannel(string channel, float val)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L220)
 
 - Sets a Csound channel. Used in connection with a chnget opcode in your Csound instrument.
 
-```public void setStringChannel(string channel, string val)```
+[**public void setStringChannel(string channel, string val)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L227)
 
 - Sets a string channel in Csound. Used in connection with a chnget opcode in your Csound instrument.
 
-```public void sendScoreEvent(string scoreEvent)```
+[**public void sendScoreEvent(string scoreEvent)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L249)
 
 - Send a score event to Csound in the form of "i1 0 10 ...."
 
-```public double getChannel(string channel)```
+[**public double getChannel(string channel)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L234)
 
 - Gets a Csound channel. Used in connection with a chnset opcode in your Csound instrument.
 
-```public double getTable(int tableNumber, int index)```
+[**public double getTableSample(int tableNumber, int index)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L242)
 
 - Retrieves a single sample from a Csound function table. 
 
-```public double get0dbfs()```
+[**public double get0dbfs()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L195)
 
 - Get 0dbfs
 
-```public int performKsmps()```
+[**public int performKsmps()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L163)
 
 - Processes a ksmps-sized block of samples
 
-```public double setKr()```
+[**public double getKr()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L107)
 
-- Return the current control rate
+- Returns the current control rate
 
-```public uint getKsmps()```
+[**public uint getKsmps()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L171)
 
 - Get the current control rate
 
-```public void processBlock(float[] samples, int numChannels)```
+[**public void processBlock(float[] samples, int numChannels)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L127)
 
 - Processes a block of samples
 
-```public double getSample(int frame, int channel)```
+[**public double getSample(int frame, int channel)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L187)
 
 - Get a sample from Csound's audio output buffer
 
-```public void setSample(int frame, int channel, double sample)```
+[**public void setSample(int frame, int channel, double sample)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L187)
 
-- Set a sample in Csound's input buffer	
+- Set a sample in Csound's input buffer (is known to cause problems! Please only use this method if absolutely needed).	
