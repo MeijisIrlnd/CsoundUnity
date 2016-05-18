@@ -23,6 +23,13 @@
     <section class="main-content">
       <p>CsoundUnity is a fully integrated audio middleware for the Unity(3D) game engine based in C#. It extends Unity's audio API by creating Csound-based AudioSource objects that can interact and exist alongside regular AudioSource objects. With CsoundUnity, games developers have at their fingertips one of the most powerful synthesis systems in existence.</p>
 
+      <h3>Version 2 released</h3>
+      Version 2.0 is now ready for download. This release brings about a lot of changes from the previous package. Much of the utility functions that shipped with the previous versions have been removed in a move towards better integration with Unity's own audio API. Each CsoundUnity component now requires an AudioSource object. Ergo, each CsoundUnity component is embedded into an AudioSource. Therefore all sounds are delivered through Unity's own audio IO wrappers even if they are created with Csound's. Previous versions only allowed for a single Csound file, this version can place a Csound file on as many GameObjects as there are in a scene. Each file is read using an unique instance of Csound, and each file can run as many Csound instruments as you like. And because each CsoundUnity component is wrapped in an AudioSource, it's now possible to use Unity's own 3D Audio Settings to add movement and space to your Csound instruments. 
+
+      On top of all this, users can now audition their Csound instruments inside the Unity Editor. Instruments can be controlled using sliders, checkboxes and toggles without ever having to write a line of C#. Please check out the <a href="http://rorywalsh.github.io/CsoundUnity/docs.html">docs</a> for more information on getting started with the latest version of CsoundUnity.  
+
+      <img src="http://rorywalsh.github.io/CsoundUnity/images/EditorScreen.png" alt="CsOptions"/>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rorywalsh/CsoundUnity">Csoundunity</a> is maintained by <a href="https://github.com/rorywalsh">rorywalsh</a>.</span>
 
