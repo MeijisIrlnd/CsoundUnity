@@ -112,7 +112,7 @@ Below is a list of all the methods currently available in CsoundUnity.
 
 - Processes a ksmps-sized block of samples
 
-[**public double getKr()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L107)
+[**public double getKr()**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L107)
 
 - Returns the current control rate
 
