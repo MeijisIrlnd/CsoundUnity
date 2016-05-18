@@ -12,9 +12,9 @@
 
 In order to use CsoundUnity you will need to install the packages available from the following links:
 
-- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
+- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/v2.0/CsoundUnityWin.unitypackage) 
 
-- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
+- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/v2.0/CsoundUnityOSX.unitypackage)
 
 The package comes with a simple scene that demonstrates how it can be used. If you installed CsoundUnity from the Assets Store, you will need to also install Csound. Information on this is given below in the [troubleshooting](#troubleshooting) section.
 
@@ -27,7 +27,7 @@ CsoundUnity is a simple component that can be added to any GameObject in a scene
 
 CsoundUnity requires the presence of an AudioSource. If the GameObject you are trying to attach a CsoundUnity component to does not already have an AudioSource attached, one will be added automatically. 
 
-Once a CsoundUnity component has been added to a GameObject, you will need to attach a Csound file to it. Csound files *MUST* be placed somewhere in the Assets/Scripts folder. In the sample CsoundUnity package they are kept in a sub-folder within Assets/Scripts called CsoundFiles. This is not required, but may help to better organise your assets. To attach a Csound file to a CsoundUnity component, simply drag it from the Assets folder to the 'Drag and Drop Csound file here' field in the CsoundUnity component inspector.
+Once a CsoundUnity component has been added to a GameObject, you will need to attach a Csound file to it. Csound files *MUST* be placed somewhere in the Assets/Scripts folder. In the sample CsoundUnity package they are kept in a sub-folder within Assets/Scripts called CsoundFiles. This is not required, but may help to better organise your assets. To attach a Csound file to a CsoundUnity component, simply drag it from the Assets folder to the 'Drag and Drop Csound file here' field in the CsoundUnity component inspector. When your game starts, Csound will feed audio from its output buffer into the AudioSource. Any audio produced by Csound can be accessed through the AudioSource component. This is currently restricted to stereo files, but will wor for any amount of channels. See [CsoundUnity::processBlock()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L130-L161) 
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/addCsoundFile.gif" alt="Add Csound file"/>
 
@@ -35,20 +35,20 @@ Your Csound files should always include the **-n -d** flags in the CsOptions sec
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/CsOptions.png" alt="CsOptions"/>
 
-This ensures Csound does not try to open an audio devices. This is left to Unity. If you fails to disable writing of audio from Csound to realtime audio output, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package. 
+This ensures Csound does not try to open any audio devices. This is left to entirely up to Unity. If you fail to disable writing of audio from Csound to a realtime audio output device, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package. You can also start an instrument to play at any time using the [CsoundUnity::sendScoreEvent()](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L252-L256) method. 
 
 <a name=controlling_csound_from_unity></a>
 ## Controlling Csound from Unity 
 
-Once you have attached a Csound file to a CsoundUnity componet, you may wish to control aspects of that instrument in realtime. To do this, you can use Csound's channel system. Csound allows external data to be sent and received over its channel system. To access data in Csound, one must use the **chnget** opcode. In the following code example, we access data being sent from Unity to Csoud on a channel named *speed*. The variable kSpeed will constantly update according to the value stored on the channel named *speed*. 
+Once you have attached a Csound file to a CsoundUnity componet, you may wish to control aspects of that instrument in realtime. To do this, you can use Csound's channel system. Csound allows data to be sent and received over its channel system. To access data in Csound, one must use the **chnget** opcode. In the following code example, we access data being sent from Unity to Csoud on a channel named *speed*. The variable kSpeed will constantly update according to the value stored on the channel named *speed*. 
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/chnget.png" alt="chnget"/>
 
-In order to send data from Unity to Csound we must use the **CsoundUnity::setChannel(string channel, double value)** method. Before calling any CsoundUnity methods, one must first access the component using the **GetComponent()** method. This can be seen the simple script that follows. One usually calls GetComponent() in your script's **Awake()** method. Once the CsoundUnity componet has been accessed, any of its member method can be called. In the **update()** method of the script below,     
+In order to send data from Unity to Csound we must use the [**CsoundUnity::setChannel(string channel, double value)**](https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L223-L227) method. Before calling any CsoundUnity methods, one must first access the component using the **GetComponent()** method. This can be seen the simple script that follows. One usually calls GetComponent() in your script's **Awake()** method. Once the CsoundUnity componet has been accessed, any of its member method can be called. In the **update()** method of the script below,     
 
 <img src="http://rorywalsh.github.io/CsoundUnity/images/setChannel.png" alt="setChannel"/>
 
-Channels can also be used to trigger one-shot instruments to play. The simplest way to achieve this is to use Csound's **event** opcode. In the following Csound code example the **JUMP** instrument will be triggered whenever the value of the *"jump"* channel changes. Instrument **TriggerInstrument** will start as soon as the game does. It's job is to listen for changes to the values stored on the channel named *"jump"*. When the channel value changes the variable **kJumpButton** will change, causing teh **changed** opcode to output a 1. At this point the code contained the **if** block will be triggered and the instrument named **JUMP** will be triggered to play for one second. 
+Channels can also be used to trigger one-shot instruments to play. The simplest way to achieve this is to use Csound's **event** opcode. In the following Csound code example the **JUMP** instrument will be triggered whenever the value of the *"jump"* channel changes. Instrument **TriggerInstrument** will start as soon as the game does. Its job is to listen for changes to the values stored on the channel named *"jump"*. When the channel value changes the variable **kJumpButton** will change, causing the **changed** opcode to output a 1. At this point the code contained within the **if** block will be triggered and the instrument named **JUMP** will be triggered to play for one second. 
 
 <a name=controlling_csound_from_unity_editor></a>
 ## Controlling Csound from the Unity Editor
@@ -61,6 +61,7 @@ Each control MUST specify a channel. The range() identifier must be used if the 
 
 When a Csound file which contains a valid <CsoundUnity> section is dragged to a CsoundUnity component, Unity will generate controls for each channel. These controls can be tweaked when your game is running. Each time a control is modified, its value is sent to Csound from Unity on the associated channel. In this way it works the same as the method above, only we don't have to code anything in order to test our sound. For now, CsoundUnity support only three types of controller, slider, checkbox(toggle) and button. 
 
+
 <img src="http://rorywalsh.github.io/CsoundUnity/images/csoundUnityDescriptor.gif" alt="csoundUnitySection"/>
 
 <a name=troubleshooting></a>
@@ -68,12 +69,15 @@ When a Csound file which contains a valid <CsoundUnity> section is dragged to a 
 
 If you installed CsoundUnity from the Assets Store and don't already have Csound, you should simply install one of the following packages instead:
 
-- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityWin64.unitypackage) 
+- [CsoundUnity for Windows](https://github.com/rorywalsh/CsoundUnity/releases/download/v2.0/CsoundUnityWin.unitypackage) 
 
-- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/0.01/CsoundUnityOSX.unitypackage)
+- [CsoundUnity for OSX](https://github.com/rorywalsh/CsoundUnity/releases/download/v2.0/CsoundUnityOSX.unitypackage)
+
 On Windows, the csound64.dll must reside in the SmtreaingAssets folder. If it is not there, CsoundUnity will display an error. One OSX, the CsoundLib64.framework must reside in the StreamingAssets folder. If it is not, CsoundUnity will display an error. 
 
-If you have Csound installed you can simple place it to the correct location, although it is far easier to use the package provided. They will not have any effect on any existing Csound installation. If you are having any issues with CsoundUnity, please use the github [Issue Tracker](https://github.com/rorywalsh/CsoundUnity/issues) to file an issue. 
+If you have Csound installed you can simple place it to the correct location, although it is far easier to use the package provided. They will not have any effect on any existing Csound installation. 
+
+If your game crashes at any point, the best place to look for answers will be in the [Editor Logs](http://docs.unity3d.com/Manual/LogFiles.html). If you continue to have issues with CsoundUnity, please use the github [Issue Tracker](https://github.com/rorywalsh/CsoundUnity/issues) to file an issue. 
 
 <a name=reference></a>
 ## Reference
