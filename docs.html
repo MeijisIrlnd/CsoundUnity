@@ -30,6 +30,7 @@
 <li><a href="#getting_started">Getting started</a></li>
 <li><a href="#controlling_csound_from_unity">Controlling Csound from Unity</a></li>
 <li><a href="#controlling_csound_from_unity_editor">Controlling Csound from the Unity Editor</a></li>
+<li><a href="#reading_files_with_csound">Reading files with Csound</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 <li><a href="#reference">Reference</a></li>
 </ul>
@@ -42,6 +43,7 @@
 </li>
 </ul>
 <p>To install the package, simply create a new Unity project, then go to Assets, Import Package, Custom package and select the CsoundUnity package for your platform. Then select 'Import All' and hit Ok.  The package comes with a simple scene that demonstrates how it can be used. If you installed CsoundUnity from the Assets Store, you will need to also install Csound. Information on this is given below in the <a href="#troubleshooting">troubleshooting</a> section.</p>
+
 <p><a name="getting_started"></a></p>
 <h2>Getting Started</h2>
 <p>CsoundUnity is a simple component that can be added to any GameObject in a scene. To do so simple hit <strong>AddComponent</strong> in the inspector, then click <strong>Audio</strong> and add <strong>CsoundUnity</strong>.</p>
@@ -52,6 +54,7 @@
 <p>Your Csound files should always include the <strong>-n -d</strong> flags in the CsOptions section. </p>
 <p><img src="http://rorywalsh.github.io/CsoundUnity/images/CsOptions.png" alt="CsOptions"/></p>
 <p>This ensures Csound does not try to open any audio devices. This is left to entirely up to Unity. If you fail to disable writing of audio from Csound to a realtime audio output device, both Csound and Unity will try to access the computer's audio devices at the same time. This will inevitably lead to problems. Any Csound instruments that are set to start after 0 seconds will begin to play as soon as you enter 'Play' mode in Unity. This can be seen in several of the instruments provided in the sample package. You can also start an instrument to play at any time using the <a href="https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L252-L256"><strong>CsoundUnity::sendScoreEvent()</strong></a> method. </p>
+
 <p><a name=controlling_csound_from_unity></a></p>
 <h2>Controlling Csound from Unity</h2>
 <p>Once you have attached a Csound file to a CsoundUnity componet, you may wish to control aspects of that instrument in realtime. To do this, you can use Csound's channel system. Csound allows data to be sent and received over its channel system. To access data in Csound, one must use the <strong>chnget</strong> opcode. In the following code example, we access data being sent from Unity to Csoud on a channel named <em>speed</em>. The variable kSpeed will constantly update according to the value stored on the channel named <em>speed</em>. </p>
@@ -59,6 +62,7 @@
 <p>In order to send data from Unity to Csound we must use the <a href="https://github.com/rorywalsh/CsoundUnity/blob/master/CsoundUnityScripts/CsoundUnity.cs#L223-L227"><strong>CsoundUnity::setChannel(string channel, double value)</strong></a> method. Before calling any CsoundUnity methods, one must first access the component using the <strong>GetComponent()</strong> method. This can be seen the simple script that follows. One usually calls GetComponent() in your script's <strong>Awake()</strong> method. Once the CsoundUnity componet has been accessed, any of its member method can be called. In the <strong>update()</strong> method of the script below,     </p>
 <p><img src="http://rorywalsh.github.io/CsoundUnity/images/setChannel.png" alt="setChannel"/></p>
 <p>Channels can also be used to trigger one-shot instruments to play. The simplest way to achieve this is to use Csound's <strong>event</strong> opcode. In the following Csound code example the <strong>JUMP</strong> instrument will be triggered whenever the value of the <em>"jump"</em> channel changes. Instrument <strong>TriggerInstrument</strong> will start as soon as the game does. Its job is to listen for changes to the values stored on the channel named <em>"jump"</em>. When the channel value changes the variable <strong>kJumpButton</strong> will change, causing the <strong>changed</strong> opcode to output a 1. At this point the code contained within the <strong>if</strong> block will be triggered and the instrument named <strong>JUMP</strong> will be triggered to play for one second. </p>
+
 <p><a name=controlling_csound_from_unity_editor></a></p>
 <h2>Controlling Csound from the Unity Editor</h2>
 <p>In order to control Csound instruments in standalone gameplay, you will need to use the methods described above. However, you can also control Csound channels using the Unity Editor while you are developing your game's sounds. To do so, you must provide a short <CsoundUnity></CsoundUnity> descriptor at the top of your Csound files describing the channels that are needed. This simple descriptor section uses a single line of code to describe each channel. Each line starts with the given channel's controller type and is then followed by combination of other identifiers such as channel(), text(), and range(). The following descriptor sets up 3 channel controllers. A slider, a button and a checkbox(toggle).</p>
@@ -66,6 +70,28 @@
 <p>Each control MUST specify a channel. The range() identifier must be used if the controller type is a slider. The text() identifier can be used to display unique text beside a control but it is not required. If it is left out, the channel() name will be used as the control's label. The caption() identifier, used with form, is used to display some simple help text to the user.</p>
 <p>When a Csound file which contains a valid <CsoundUnity> section is dragged to a CsoundUnity component, Unity will generate controls for each channel. These controls can be tweaked when your game is running. Each time a control is modified, its value is sent to Csound from Unity on the associated channel. In this way it works the same as the method above, only we don't have to code anything in order to test our sound. For now, CsoundUnity support only three types of controller, slider, checkbox(toggle) and button. </p>
 <p><img src="http://rorywalsh.github.io/CsoundUnity/images/csoundUnityDescriptor.gif" alt="csoundUnitySection"/></p>
+
+<p><a name=creading_files_with_csound></a></p>
+<h2>Reading files with Csound</h2>
+<p>If you wish to read files with Csound through its file reading opcodes, i.e, diskin, fink, etc, you should create a folder in your Assets folder called CsoundFiles. It's good practice to place all files Csound needs access to in this folder. You can access the path for this folder in your Csound code by using the <em>chnget</em> opcode. You will need to pass it the channel name "CsoundFiles". For example, the following code will read a file called mix from the CsoundFile directory. 
+
+<div class="boxed">
+instr PLAY_AUDIO_CLIP
+  SDataPath chnget "CsoundFiles"  ;path to Csound files...
+  SFilename sprintf "%s/mix.wav", SDataPath
+  a1 diskin2 SFilename, 1, 0, 1
+  outs a1, a1 
+endin  
+</div>
+
+When you build a standalone version of your game all files in the Assets/CsoundFiles folder will be copied to the StreamingAssets folder so that Unity does not try to compress and reformat them. The 'CsoundFiles' channel will also be updated so your Csound code will still work. CsoundUnity also provides the channels for accessing the Assets/StreamingAssets folder, and the Assets/Audio folder.  
+
+<div class="boxed">
+SStreamingAssets chnget "StreamingAssets" ;return the path to the streaming assets folder
+SAudio chnget "AudioPath" ; returns the path to the audio assets folder
+</div>
+
+
 <p><a name=troubleshooting></a></p>
 <h2>Troubleshooting</h2>
 <p>If you installed CsoundUnity from the Assets Store and don't already have Csound, you should simply install one of the following packages instead:</p>
