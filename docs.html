@@ -71,25 +71,20 @@
 <p>When a Csound file which contains a valid <CsoundUnity> section is dragged to a CsoundUnity component, Unity will generate controls for each channel. These controls can be tweaked when your game is running. Each time a control is modified, its value is sent to Csound from Unity on the associated channel. In this way it works the same as the method above, only we don't have to code anything in order to test our sound. For now, CsoundUnity support only three types of controller, slider, checkbox(toggle) and button. </p>
 <p><img src="http://rorywalsh.github.io/CsoundUnity/images/csoundUnityDescriptor.gif" alt="csoundUnitySection"/></p>
 
-<p><a name=creading_files_with_csound></a></p>
+<p><a name=reading_files_with_csound></a></p>
 <h2>Reading files with Csound</h2>
 <p>If you wish to read files with Csound through its file reading opcodes, i.e, diskin, fink, etc, you should create a folder in your Assets folder called CsoundFiles. It's good practice to place all files Csound needs access to in this folder. You can access the path for this folder in your Csound code by using the <em>chnget</em> opcode. You will need to pass it the channel name "CsoundFiles". For example, the following code will read a file called mix from the CsoundFile directory. 
 
-<div class="boxed">
-instr PLAY_AUDIO_CLIP
-  SDataPath chnget "CsoundFiles"  ;path to Csound files...
-  SFilename sprintf "%s/mix.wav", SDataPath
-  a1 diskin2 SFilename, 1, 0, 1
-  outs a1, a1 
-endin  
-</div>
+
+<p><img src="http://rorywalsh.github.io/CsoundUnity/images/readFile.png" alt="readFIle"/></p>
+
 
 When you build a standalone version of your game all files in the Assets/CsoundFiles folder will be copied to the StreamingAssets folder so that Unity does not try to compress and reformat them. The 'CsoundFiles' channel will also be updated so your Csound code will still work. CsoundUnity also provides the channels for accessing the Assets/StreamingAssets folder, and the Assets/Audio folder.  
 
-<div class="boxed">
+
 SStreamingAssets chnget "StreamingAssets" ;return the path to the streaming assets folder
 SAudio chnget "AudioPath" ; returns the path to the audio assets folder
-</div>
+
 
 
 <p><a name=troubleshooting></a></p>
