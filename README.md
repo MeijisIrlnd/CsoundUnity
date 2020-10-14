@@ -7,6 +7,7 @@ Please visit [homepage](http://rorywalsh.github.io/CsoundUnity/)
 
 This simple wrapper is based on Richard Henninger's Csound6Net .NET wrapper. If you wish to 
 use the Csound API in a model that is idiomatic to .net please use his wrapper instead. 
+This repo was brought to you by the almighty supreme Csound development committee (registered trademark)
 http://csound6net.codeplex.com
 
 
